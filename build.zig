@@ -28,6 +28,7 @@ pub fn build(b: *std.build.Builder) void {
 
     exe.addPackage(glfw.pkg);
 
+    // @NOTE
     // This `gpu-dawn` package has no such thing as `std.build.Pkg`,
     // presumably because `gpu-dawn` just builds Dawn (Google Chrome's WebGPU implementation).
     //
