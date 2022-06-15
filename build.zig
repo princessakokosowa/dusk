@@ -38,6 +38,10 @@ pub fn build(b: *std.build.Builder) void {
 
     exe.addPackage(gpu.pkg);
 
+    glfw.link(exe.builder, exe, options.glfw_options);
+    gpu_dawn.link(exe.builder, exe, options.gpu_dawn_options);
+    gpu.link(exe.builder, exe, options.gpu_options);
+
     exe.install();
 
     const run_cmd = exe.run();
