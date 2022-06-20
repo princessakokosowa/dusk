@@ -222,17 +222,19 @@ pub fn main() !void {
     var context = try Context.init();
     defer context.deinit();
 
+    const wgsl = @embedFile("triangle.wgsl");
+
     const vs_module = context.device.createShaderModule(&.{
         .label = "vertex shader",
         .code = .{
-            .wgsl = @embedFile("vert.wgsl")
+            .wgsl = wgsl,
         },
     });
 
     const fs_module = context.device.createShaderModule(&.{
         .label = "fragment shader",
         .code = .{
-            .wgsl = @embedFile("frag.wgsl")
+            .wgsl = wgsl,
         },
     });
 
@@ -257,20 +259,24 @@ pub fn main() !void {
 
     const fragment = gpu.FragmentState{
         .module = fs_module,
-        .entry_point = "main",
-        .targets = &.{color_target},
+        .entry_point = "fsMain",
+        .targets = &.{
+            color_target
+        },
         .constants = null,
+    };
+
+    const vertex = gpu.VertexState{
+        .module = vs_module,
+        .entry_point = "vsMain",
+        .buffers = null,
     };
 
     const render_pipeline_descriptor = gpu.RenderPipeline.Descriptor{
         .fragment = &fragment,
         .layout = null,
         .depth_stencil = null,
-        .vertex = .{
-            .module = vs_module,
-            .entry_point = "main",
-            .buffers = null,
-        },
+        .vertex = vertex,
         .multisample = .{
             .count = 1,
             .mask = 0xFFFFFFFF,
