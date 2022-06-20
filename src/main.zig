@@ -1,12 +1,7 @@
 const std = @import("std");
 const glfw = @import("glfw");
 const gpu = @import("gpu");
-
-pub const c = @cImport({
-    @cInclude("dawn/webgpu.h");
-    @cInclude("dawn/dawn_proc.h");
-    @cInclude("dawn_native_mach.h");
-});
+const c = @import("c").c;
 
 const Context = struct {
     window: glfw.Window,
@@ -79,6 +74,21 @@ const Context = struct {
 
         self.device.release();
     }
+};
+
+const WindowData = struct {
+    surface: ?gpu.Surface,
+    swap_chain: ?gpu.SwapChain,
+    swap_chain_format: gpu.Texture.Format,
+    current_desc: gpu.SwapChain.Descriptor,
+    target_desc: gpu.SwapChain.Descriptor,
+};
+
+const FrameParams = struct {
+    window: glfw.Window,
+    device: gpu.Device,
+    pipeline: gpu.RenderPipeline,
+    queue: gpu.Queue,
 };
 
 pub fn main() !void {
