@@ -1,7 +1,7 @@
 const std = @import("std");
 const glfw = @import("glfw");
 const gpu = @import("gpu");
-const c = @import("c").c;
+const c = @import("c.zig").c;
 
 const Context = struct {
     window: glfw.Window,
