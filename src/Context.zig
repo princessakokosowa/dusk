@@ -30,7 +30,6 @@ pub const texture_format: gpu.Texture.Format = gpu.Texture.Format.bgra8_unorm;
 // Most likely, I won't be particularly interested in its Web-related capabilities itself in the
 // near future.
 //     - princessakokosowa, 20 June 2022
-
 pub fn init() !Context {
     // glfw.setErrorCallback(/* to be defined */);
     try glfw.init(.{});
