@@ -29,6 +29,12 @@ pub fn init() !Application {
     });
     defer vs_module.release();
 
+    const vertex = gpu.VertexState{
+        .module = vs_module,
+        .entry_point = "vsMain",
+        .buffers = null,
+    };
+
     const fs_module = context.device.createShaderModule(&.{
         .label = "fragment shader",
         .code = .{
@@ -36,6 +42,15 @@ pub fn init() !Application {
         },
     });
     defer fs_module.release();
+
+    const fragment = gpu.FragmentState{
+        .module = fs_module,
+        .entry_point = "fsMain",
+        .targets = &.{
+            color_target,
+        },
+        .constants = null,
+    };
 
     const blend = gpu.BlendState{
         .color = .{
@@ -54,21 +69,6 @@ pub fn init() !Application {
         .format = Context.texture_format,
         .blend = &blend,
         .write_mask = gpu.ColorWriteMask.all,
-    };
-
-    const fragment = gpu.FragmentState{
-        .module = fs_module,
-        .entry_point = "fsMain",
-        .targets = &.{
-            color_target,
-        },
-        .constants = null,
-    };
-
-    const vertex = gpu.VertexState{
-        .module = vs_module,
-        .entry_point = "vsMain",
-        .buffers = null,
     };
 
     const bind_group_layout_entry = gpu.BindGroupLayout.Entry.buffer(0, .{ .vertex = true, .fragment = true }, .uniform, true, 0);
